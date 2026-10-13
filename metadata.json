@@ -1,0 +1,6 @@
+{
+  "name": "GAM GeneXus 18 Authentication Client",
+  "description": "Cliente frontend React para autenticación OAuth 2.0 con GeneXus Access Manager (GAM) 18.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
