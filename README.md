@@ -49,10 +49,10 @@ const config: GamConfig = {
 
   // 2. URL base donde corre tu GeneXus GAM (incluyendo el directorio virtual)
   // En desarrollo web suele usarse la ruta proxy local para evitar CORS:
-  baseUrl: 'http://localhost:5173/api-gam/Login_GAM_LeoNETSQLServer',
+  baseUrl: 'http://localhost:5173/api-gam/<directorio_virtual>',
 
   // 3. (Opcional) URL pública real de GAM si se requiere para redirecciones externas:
-  // publicUrl: 'http://localhost:8082/Login_GAM_LeoNETSQLServer',
+  // publicUrl: 'http://<servidor:puerto>/<directorio_virtual>',
 
   // 4. URL exacta a la que GAM debe retornar tras el login
   redirectUri: 'http://localhost:5173/oauth/gam/callback',
@@ -88,7 +88,7 @@ export const LoginPage: React.FC = () => {
 
     const client = new GamAuthClient({
       clientId: 'TU_CLIENT_ID',
-      publicUrl: 'http://localhost:8082/Login_GAM_LeoNETSQLServer',
+      publicUrl: 'http://<servidor:puerto>/<directorio_virtual>',
       redirectUri: `${window.location.origin}/oauth/gam/callback`,
     });
 
@@ -139,7 +139,7 @@ export const CallbackPage: React.FC = () => {
 
       const client = new GamAuthClient({
         clientId: 'TU_CLIENT_ID',
-        baseUrl: 'http://localhost:5173/api-gam/Login_GAM_LeoNETSQLServer',
+        baseUrl: 'http://localhost:5173/api-gam/<directorio_virtual>',
         redirectUri: `${window.location.origin}/oauth/gam/callback`,
       });
 
@@ -180,7 +180,7 @@ export const CallbackPage: React.FC = () => {
   }, []);
 
   if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
-  if (usuario) return <div>Bienvenido, {usuario.first_name || usuario.user_name} ({usuario.email})</div>;
+  if (usuario) return <div>Bienvenido, {usuario.first_name || usuario.username || usuario.user_name} ({usuario.email})</div>;
   return <div>{estado}</div>;
 };
 ```
@@ -257,7 +257,7 @@ export default function App() {
     <GamAuthProvider
       config={{
         clientId: 'TU_CLIENT_ID',
-        baseUrl: 'http://localhost:5173/api-gam/Login_GAM_LeoNETSQLServer',
+        baseUrl: 'http://localhost:5173/api-gam/<directorio_virtual>',
         redirectUri: `${window.location.origin}/oauth/gam/callback`,
       }}
     >
@@ -346,7 +346,7 @@ export const BarraUsuario = () => {
 
   return (
     <div>
-      <span>Hola, {user?.first_name || user?.user_name}</span>
+      <span>Hola, {user?.first_name || user?.username || user?.user_name}</span>
       <button onClick={logout}>Cerrar Sesión</button>
     </div>
   );
@@ -368,7 +368,7 @@ const handleLogoutCompleto = async () => {
 
   // 2. Notificar a GAM para destruir su cookie central
   const signoutUrl = 
-    `http://localhost:8082/Login_GAM_LeoNETSQLServer/oauth/gam/signout` +
+    `http://<servidor:puerto>/<directorio_virtual>/oauth/gam/signout` +
     `?client_id=TU_CLIENT_ID&redirect_uri=${encodeURIComponent(window.location.origin)}`;
 
   window.location.href = signoutUrl;
@@ -497,7 +497,7 @@ Y en tu `tsconfig.json` principal, excluye las carpetas de salida:
 
 ## 7. Configuración del Proxy en Aplicaciones Cliente Vite
 
-Si tu aplicación cliente corre en el puerto `5173` y tu servidor GeneXus GAM corre en el puerto `8082`, debes agregar el proxy en el `vite.config.ts` de la aplicación cliente para **evitar el error 404 y los bloqueos de CORS**:
+Si tu aplicación cliente corre en el puerto `5173` y tu servidor GeneXus GAM corre en `http://<servidor:puerto>`, debes agregar el proxy en el `vite.config.ts` de la aplicación cliente para **evitar el error 404 y los bloqueos de CORS**:
 
 ```typescript
 // vite.config.ts (en tu aplicación cliente)
@@ -509,7 +509,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api-gam': {
-        target: 'http://localhost:8082', // Servidor GeneXus GAM
+        target: 'http://<servidor:puerto>', // Servidor GeneXus GAM
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api-gam/, ''),
@@ -523,7 +523,7 @@ export default defineConfig({
 
 ## 8. Endpoints Oficiales de GeneXus GAM 18
 
-Todos los endpoints cuelgan del directorio virtual de tu modelo GeneXus (ej: `/Login_GAM_LeoNETSQLServer`):
+Todos los endpoints cuelgan del directorio virtual de tu modelo GeneXus (ej: `/<directorio_virtual>`):
 
 | Propósito | Endpoint Estándar (Web / IDP) | Endpoint REST v2.0 (Mobile) | Método |
 | :--- | :--- | :--- | :--- |
@@ -559,7 +559,7 @@ const client = new GamAuthClient(config?: Partial<GamConfig>);
 
 ### 2. Error: `404 (Not Found)` al consultar `/api-gam/.../oauth/gam/access_token`
 * **Causa:** Tu aplicación cliente en el puerto `5173` no tiene configurado el proxy en su `vite.config.ts`, por lo que Vite busca una ruta interna inexistente en el puerto 5173.
-* **Solución:** Configura `server.proxy` en el `vite.config.ts` de tu aplicación cliente apuntando al puerto de GeneXus GAM (`http://localhost:8082`).
+* **Solución:** Configura `server.proxy` en el `vite.config.ts` de tu aplicación cliente apuntando al host de GeneXus GAM (`http://<servidor:puerto>`).
 
 ### 3. Al hacer logout y volver a hacer clic en login, entra sin pedir usuario y contraseña
 * **Causa:** GAM guarda una cookie de sesión central (SSO) en el navegador.

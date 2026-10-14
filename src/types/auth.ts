@@ -39,6 +39,13 @@ export interface GamTokenResponse {
 }
 
 export interface GamUserInfo {
+  guid?: string;
+  username?: string;
+  user_name?: string;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  roles?: Array<{ id?: string; name?: string; [key: string]: unknown }>;
   [key: string]: unknown;
 }
 

@@ -8,8 +8,8 @@ import {
 
 // En desarrollo con Vite, usamos el prefijo '/api-gam' para que las peticiones vayan al proxy de Vite
 // y eviten el bloqueo de CORS del navegador, reenviando al host configurado en vite.config.ts
-export const DEFAULT_GAM_BASE_URL = '/api-gam/Login_GAM_LeoNETSQLServer';
-export const DEFAULT_PUBLIC_GAM_URL = 'https://9874-186-123-128-37.ngrok-free.app/Login_GAM_LeoNETSQLServer';
+export const DEFAULT_GAM_BASE_URL = '/api-gam';
+export const DEFAULT_PUBLIC_GAM_URL = '';
 export const GAM_TOKEN_ENDPOINT = '/oauth/gam/v2.0/access_token';
 export const GAM_IDP_TOKEN_ENDPOINT = '/oauth/gam/access_token';
 export const GAM_USERINFO_ENDPOINT = '/oauth/gam/v2.0/userinfo';

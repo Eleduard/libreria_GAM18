@@ -23,14 +23,14 @@ Puedes configurar la librería mediante variables de entorno en tu archivo `.env
 
 ```env
 # Frontend (Vite)
-VITE_GAM_BASE_URL="/api-gam/Login_GAM_LeoNETSQLServer"
-VITE_GAM_PUBLIC_URL="https://midominio.com/Login_GAM_LeoNETSQLServer"
+VITE_GAM_BASE_URL="/api-gam/<directorio_virtual>"
+VITE_GAM_PUBLIC_URL="http://<servidor:puerto>/<directorio_virtual>"
 VITE_GAM_CLIENT_ID="mi_client_id_en_gam"
 VITE_GAM_REDIRECT_URI="http://localhost:3000/oauth/gam/callback"
 VITE_GAM_SCOPE="gam_user_data+gam_user_roles"
 
 # Backend (Node.js confidencial opcional)
-GAM_BASE_URL="http://localhost:8082/Login_GAM_LeoNETSQLServer"
+GAM_BASE_URL="http://<servidor:puerto>/<directorio_virtual>"
 GAM_CLIENT_ID="mi_client_id_en_gam"
 GAM_CLIENT_SECRET="mi_client_secret_confidencial"
 ```
@@ -68,7 +68,7 @@ export function BarraSuperior() {
   if (isAuthenticated && user) {
     return (
       <div className="flex items-center gap-4">
-        <span>Bienvenido, {user.first_name || user.user_name}!</span>
+        <span>Bienvenido, {user.first_name || user.username || user.user_name}!</span>
         <button onClick={logout} className="btn-secundario">
           Cerrar Sesión
         </button>

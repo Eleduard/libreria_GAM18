@@ -294,12 +294,31 @@ export class GamAuthClient {
         responseData = { rawResponse: responseText };
       }
 
+      // Normalizar atributos de usuario para garantizar compatibilidad total
+      // GeneXus GAM retorna 'username' de forma nativa
+      let normalizedData: GamUserInfo | undefined;
+      if (responseData && typeof responseData === 'object' && !Array.isArray(responseData)) {
+        const resolvedUsername =
+          responseData.username ||
+          responseData.user_name ||
+          responseData.user ||
+          undefined;
+
+        normalizedData = {
+          ...responseData,
+          username: resolvedUsername,
+          user_name: resolvedUsername,
+        };
+      } else {
+        normalizedData = responseData as GamUserInfo;
+      }
+
       return {
         success: response.ok,
         status: response.status,
         statusText: response.statusText,
         endpoint,
-        data: responseData as GamUserInfo,
+        data: normalizedData,
       };
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : String(err);

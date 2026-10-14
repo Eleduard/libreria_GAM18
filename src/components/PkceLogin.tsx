@@ -116,7 +116,7 @@ export const PkceLogin: React.FC<PkceLoginProps> = () => {
             type="text"
             value={publicGamUrl}
             onChange={(e) => handlePublicUrlChange(e.target.value)}
-            placeholder="https://tudominio.com/tudirectoriovitual"
+            placeholder="http://<servidor:puerto>/<directorio_virtual>"
             className="w-full px-3 py-2 text-xs font-mono bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none"
           />
           <p className="text-[11px] text-slate-400 mt-1">

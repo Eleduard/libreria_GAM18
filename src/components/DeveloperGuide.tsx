@@ -35,7 +35,7 @@ export function TuBotonDeLogin() {
   if (isAuthenticated && user) {
     return (
       <div className="flex items-center gap-3">
-        <span>Hola, {user.first_name || user.user_name}!</span>
+        <span>Hola, {user.first_name || user.username || user.user_name}!</span>
         <button onClick={logout}>Cerrar Sesión</button>
       </div>
     );
@@ -168,7 +168,7 @@ app.get('/api/datos-privados', requireAuth, (req, res) => {
           <span>¿Cómo funciona el Proxy de Vite para URLs Locales?</span>
         </h3>
         <p className="text-xs text-slate-600 leading-relaxed">
-          Los navegadores impiden por política de <strong>CORS</strong> que una SPA en <code>http://localhost:3000</code> haga un POST directo a <code>http://localhost:8082</code> si el servidor IIS/Kestrel de GeneXus no incluye cabeceras <code>Access-Control-Allow-Origin</code>.
+          Los navegadores impiden por política de <strong>CORS</strong> que una SPA en <code>http://localhost:3000</code> haga un POST directo a <code>http://&lt;servidor:puerto&gt;</code> si el servidor IIS/Kestrel de GeneXus no incluye cabeceras <code>Access-Control-Allow-Origin</code>.
         </p>
 
         <div className="bg-slate-900 text-slate-200 p-4 rounded-lg font-mono text-xs overflow-x-auto space-y-1">
@@ -176,7 +176,7 @@ app.get('/api/datos-privados', requireAuth, (req, res) => {
           <div>server: &#123;</div>
           <div className="pl-4">proxy: &#123;</div>
           <div className="pl-8 text-emerald-400">'/api-gam': &#123;</div>
-          <div className="pl-12">target: 'http://localhost:8082', <span className="text-slate-500">// o tu URL de prueba</span></div>
+          <div className="pl-12">target: 'http://&lt;servidor:puerto&gt;', <span className="text-slate-500">// o tu URL de GAM</span></div>
           <div className="pl-12">changeOrigin: true,</div>
           <div className="pl-12">rewrite: (path) =&gt; path.replace(/^\/api-gam/, ''),</div>
           <div className="pl-8 text-emerald-400">&#125;,</div>
@@ -185,7 +185,7 @@ app.get('/api/datos-privados', requireAuth, (req, res) => {
         </div>
 
         <p className="text-xs text-slate-500">
-          De este modo, cuando el frontend llama a <code>/api-gam/Login_GAM.../oauth/gam/access_token</code>, el servidor de desarrollo de Vite lo reenvía como servidor a servidor, evitando cualquier restricción de CORS.
+          De este modo, cuando el frontend llama a <code>/api-gam/&lt;directorio_virtual&gt;/oauth/gam/access_token</code>, el servidor de desarrollo de Vite lo reenvía como servidor a servidor, evitando cualquier restricción de CORS.
         </p>
       </div>
 

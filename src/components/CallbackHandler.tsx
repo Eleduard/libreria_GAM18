@@ -125,7 +125,7 @@ export const CallbackHandler: React.FC<CallbackHandlerProps> = ({ onReset }) => 
       }
 
       // Determinar la URL del endpoint
-      // Si la URL pública configurada tiene directorio virtual (ej: /Login_GAM_LeoNETSQLServer):
+      // Si la URL pública configurada tiene directorio virtual (ej: /<directorio_virtual>):
       let virtualDirectory = '';
       if (storedSession?.publicUrl) {
         try {
@@ -342,11 +342,11 @@ export const CallbackHandler: React.FC<CallbackHandlerProps> = ({ onReset }) => 
                     type="text"
                     value={tokenEndpointUrl}
                     onChange={(e) => setTokenEndpointUrl(e.target.value)}
-                    placeholder="/api-gam/Login_GAM_LeoNETSQLServer/oauth/gam/access_token"
+                    placeholder="/api-gam/<directorio_virtual>/oauth/gam/access_token"
                     className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded font-mono text-xs focus:bg-white focus:ring-1 focus:ring-blue-500 outline-none"
                   />
                   <p className="text-[10px] text-slate-400 mt-0.5">
-                    Puedes usar el proxy (ej: <code>/api-gam/TuDirectorio/oauth/gam/access_token</code>) o una URL completa.
+                    Puedes usar el proxy (ej: <code>/api-gam/&lt;directorio_virtual&gt;/oauth/gam/access_token</code>) o una URL completa.
                   </p>
                 </div>
 
